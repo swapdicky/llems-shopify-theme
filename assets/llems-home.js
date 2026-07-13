@@ -93,12 +93,9 @@
       event.preventDefault();
 
       const button = form.querySelector('button[type="submit"]');
-      const label = button?.querySelector('.llems-btn__label');
-      const spinner = button?.querySelector('.llems-btn__spinner');
-      const originalLabel = label ? label.textContent : '';
+      const originalLabel = button ? button.textContent : '';
 
       if (button) button.disabled = true;
-      if (spinner) spinner.hidden = false;
 
       try {
         const response = await fetch(form.action, {
@@ -111,7 +108,7 @@
           throw new Error(data?.description || 'Add to cart failed');
         }
 
-        if (label) label.textContent = ADDED_MESSAGE;
+        if (button) button.textContent = ADDED_MESSAGE;
 
         // Notify the host theme that the cart changed, without knowing
         // anything about the host's cart implementation.
@@ -122,14 +119,15 @@
           })
         );
       } catch (err) {
-        if (label) label.textContent = ERROR_MESSAGE;
+        if (button) button.textContent = ERROR_MESSAGE;
         // eslint-disable-next-line no-console
         console.error('[LLEMS] Add to cart failed:', err);
       } finally {
-        if (spinner) spinner.hidden = true;
         setTimeout(() => {
-          if (button) button.disabled = false;
-          if (label) label.textContent = originalLabel;
+          if (button) {
+            button.disabled = false;
+            button.textContent = originalLabel;
+          }
         }, 1500);
       }
     }

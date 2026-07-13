@@ -154,20 +154,15 @@
               <button
                 type="submit"
                 name="add"
-                class="llems-btn llems-btn--cart"
                 aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}"
                 {% if product.available == false %}disabled{% endif %}
               >
-                <span class="llems-btn__label">{{ 'products.product.add_to_cart' | t }}</span>
-                <span class="llems-btn__spinner" hidden>
-                  <span class="llems-spinner"></span>
-                </span>
+                {{ 'products.product.add_to_cart' | t }}
               </button>
             </form>
           {%- else -%}
             <a
               href="{{ product.url }}"
-              class="llems-btn llems-btn--cart llems-btn--outline"
               aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}"
             >
               {%- if product.available -%}
