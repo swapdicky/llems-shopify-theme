@@ -19,6 +19,10 @@
       <p class="llems-footer__tagline">{{ section.settings.tagline | newline_to_br }}</p>
     {%- endif -%}
 
+    {%- if section.settings.copyright != blank -%}
+      <p class="llems-footer__copyright">{{ section.settings.copyright | escape }}</p>
+    {%- endif -%}
+
     {%- if section.settings.footer_menu != blank and section.settings.footer_menu.links.size > 0 -%}
       <nav class="llems-footer__nav" aria-label="Footer">
         <ul class="llems-footer__list">
@@ -52,6 +56,12 @@
       "id": "footer_menu",
       "label": "Footer menu",
       "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "© LLEMS"
     },
     {
       "type": "color_scheme",
