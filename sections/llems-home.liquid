@@ -69,33 +69,121 @@
   "
 >
   <div class="llems-home__inner">
-    {%- comment -%} ---------- Hero: product grid ---------- {%- endcomment -%}
+    {%- comment -%} ---------- Hero: custom 4x3 grid with logo ---------- {%- endcomment -%}
     <div class="llems-hero">
-      {%- if target_collection.products_count > 0 -%}
-        <ul
-          class="llems-plp__grid"
-          role="list"
-          aria-label="{{ target_collection.title | escape }}"
-        >
-          {%- for product in target_collection.products limit: section.settings.products_to_show -%}
-            <li class="llems-plp__item">
-              {%- comment -%} Delegate to the reusable product card. {%- endcomment -%}
-              {% render 'llems-product-card',
-                product: product,
-                ratio: image_ratio,
-                show_vendor: section.settings.show_vendor,
-                show_subtitle: section.settings.show_subtitle,
-                show_add_to_cart: section.settings.show_add_to_cart,
-                sizes: card_sizes,
-                lazy_load: true,
-                section_id: section.id
-              %}
-            </li>
-          {%- endfor -%}
-        </ul>
-      {%- else -%}
-        <p class="llems-plp__empty">{{ 'sections.collection_template.empty' | t }}</p>
-      {%- endif -%}
+      <div class="llems-hero__grid">
+        {%- comment -%} Position 0: Logo (top-left) {%- endcomment -%}
+        <div class="llems-hero__logo">
+          {%- if section.settings.logo_image != blank -%}
+            <img
+              src="{{ section.settings.logo_image | image_url: width: 400 }}"
+              srcset="
+                {{ section.settings.logo_image | image_url: width: 200 }} 200w,
+                {{ section.settings.logo_image | image_url: width: 400 }} 400w,
+                {{ section.settings.logo_image | image_url: width: 600 }} 600w
+              "
+              sizes="(min-width: 750px) 33vw, 50vw"
+              alt="{{ section.settings.logo_image.alt | escape }}"
+              width="{{ section.settings.logo_image.width }}"
+              height="{{ section.settings.logo_image.height }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="llems-hero__logo-placeholder">Logo</div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Position 1: Product (top-right) {%- endcomment -%}
+        <div class="llems-hero__product">
+          {%- if target_collection.products_count > 0 -%}
+            {%- assign product = target_collection.products[0] -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: image_ratio,
+              show_vendor: section.settings.show_vendor,
+              show_subtitle: section.settings.show_subtitle,
+              show_add_to_cart: false,
+              sizes: card_sizes,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Position 2: Empty (middle-left) {%- endcomment -%}
+        <div class="llems-hero__empty"></div>
+
+        {%- comment -%} Position 3: Product (middle-center) {%- endcomment -%}
+        <div class="llems-hero__product">
+          {%- if target_collection.products_count > 1 -%}
+            {%- assign product = target_collection.products[1] -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: image_ratio,
+              show_vendor: section.settings.show_vendor,
+              show_subtitle: section.settings.show_subtitle,
+              show_add_to_cart: false,
+              sizes: card_sizes,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Position 4: Product (middle-right) {%- endcomment -%}
+        <div class="llems-hero__product">
+          {%- if target_collection.products_count > 2 -%}
+            {%- assign product = target_collection.products[2] -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: image_ratio,
+              show_vendor: section.settings.show_vendor,
+              show_subtitle: section.settings.show_subtitle,
+              show_add_to_cart: false,
+              sizes: card_sizes,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Position 5: Product (bottom-left) {%- endcomment -%}
+        <div class="llems-hero__product">
+          {%- if target_collection.products_count > 3 -%}
+            {%- assign product = target_collection.products[3] -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: image_ratio,
+              show_vendor: section.settings.show_vendor,
+              show_subtitle: section.settings.show_subtitle,
+              show_add_to_cart: false,
+              sizes: card_sizes,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Position 6: Product (bottom-center) {%- endcomment -%}
+        <div class="llems-hero__product">
+          {%- if target_collection.products_count > 4 -%}
+            {%- assign product = target_collection.products[4] -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: image_ratio,
+              show_vendor: section.settings.show_vendor,
+              show_subtitle: section.settings.show_subtitle,
+              show_add_to_cart: false,
+              sizes: card_sizes,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Position 7: Empty (bottom-right) {%- endcomment -%}
+        <div class="llems-hero__empty"></div>
+      </div>
     </div>
 
   </div>
@@ -107,6 +195,15 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Hero grid"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo image"
+    },
     {
       "type": "header",
       "content": "Product grid"
