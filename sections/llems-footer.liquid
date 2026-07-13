@@ -22,19 +22,22 @@
         </div>
       {%- endif -%}
 
-      {%- if section.settings.footer_menu != blank and section.settings.footer_menu.links.size > 0 -%}
-        <nav class="llems-footer__nav" aria-label="Footer">
-          <ul class="llems-footer__list">
-            {%- for link in section.settings.footer_menu.links -%}
-              <li class="llems-footer__item">
-                <a class="llems-footer__link" href="{{ link.url }}">
-                  {{- link.title | escape -}}
-                </a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </nav>
-      {%- endif -%}
+      <nav class="llems-footer__nav" aria-label="Footer">
+        <ul class="llems-footer__list">
+          <li class="llems-footer__item">
+            <a class="llems-footer__link" href="/policies/shipping-policy">Shipping Policy</a>
+          </li>
+          <li class="llems-footer__item">
+            <a class="llems-footer__link" href="/policies/privacy-policy">Privacy Policy</a>
+          </li>
+          <li class="llems-footer__item">
+            <a class="llems-footer__link" href="https://instagram.com/llems" target="_blank" rel="noopener">Instagram</a>
+          </li>
+          <li class="llems-footer__item">
+            <a class="llems-footer__link" href="/pages/contact">Contacts</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </footer>
@@ -50,12 +53,6 @@
       "id": "tagline",
       "label": "Tagline",
       "default": "A Blend of Scent and Chinese typography.\nInspired by Eastern Philosophy."
-    },
-    {
-      "type": "link_list",
-      "id": "footer_menu",
-      "label": "Footer menu",
-      "default": "footer"
     },
     {
       "type": "color_scheme",
