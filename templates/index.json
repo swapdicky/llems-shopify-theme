@@ -14,11 +14,9 @@
       "settings": {
         "primary_menu": "main-menu",
         "secondary_menu": "",
-        "logo": "",
-        "hero_description": "",
         "collection": "",
         "products_to_show": 12,
-        "columns_desktop": 3,
+        "columns_desktop": 4,
         "columns_tablet": 2,
         "columns_mobile": "1",
         "image_ratio": "portrait",

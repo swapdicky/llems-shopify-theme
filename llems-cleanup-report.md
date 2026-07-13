@@ -23,7 +23,7 @@ Analysis method:
 - `llems-home` (renders `snippets/llems-product-card`)
 
 `llems-home` encapsulates the primary navigation, secondary navigation,
-brand hero, product grid, and minimal footer. The global Dawn footer group is
+4-column product grid, and minimal footer. The global Dawn footer group is
 no longer required for the homepage but remains available to other routes.
 The legacy `llems-home-product-listing` section is preserved as a thinner,
 standalone grid option for other pages or themes.

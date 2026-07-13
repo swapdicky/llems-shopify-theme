@@ -129,64 +129,33 @@
       </nav>
     {%- endif -%}
 
-    {%- comment -%} ---------- Hero: brand + product grid ---------- {%- endcomment -%}
+    {%- comment -%} ---------- Hero: product grid ---------- {%- endcomment -%}
     <div class="llems-hero">
-      <div class="llems-hero__brand">
-        {%- if section.settings.logo != blank -%}
-          <div class="llems-hero__logo-wrapper">
-            <img
-              class="llems-hero__logo"
-              src="{{ section.settings.logo | image_url: width: 1200 }}"
-              srcset="
-                {{ section.settings.logo | image_url: width: 400 }} 400w,
-                {{ section.settings.logo | image_url: width: 800 }} 800w,
-                {{ section.settings.logo | image_url: width: 1200 }} 1200w
-              "
-              sizes="(min-width: 990px) 30vw, 80vw"
-              alt="{{ shop.name | escape }}"
-              width="{{ section.settings.logo.width }}"
-              height="{{ section.settings.logo.height }}"
-              loading="eager"
-            >
-          </div>
-        {%- else -%}
-          <h1 class="llems-hero__title">{{ shop.name | escape }}</h1>
-        {%- endif -%}
-
-        {%- if section.settings.hero_description != blank -%}
-          <div class="llems-hero__description rte">
-            {{ section.settings.hero_description }}
-          </div>
-        {%- endif -%}
-      </div>
-
-      <div class="llems-hero__grid-wrapper">
-        {%- if target_collection.products_count > 0 -%}
-          <ul
-            class="llems-plp__grid"
-            role="list"
-            aria-label="{{ target_collection.title | escape }}"
-          >
-            {%- for product in target_collection.products limit: section.settings.products_to_show -%}
-              <li class="llems-plp__item">
-                {%- comment -%} Delegate to the reusable product card. {%- endcomment -%}
-                {% render 'llems-product-card',
-                  product: product,
-                  ratio: image_ratio,
-                  show_vendor: section.settings.show_vendor,
-                  show_subtitle: section.settings.show_subtitle,
-                  show_add_to_cart: section.settings.show_add_to_cart,
-                  sizes: card_sizes,
-                  lazy_load: true,
-                  section_id: section.id
-                %}
-              </li>
-            {%- endfor -%}
-          </ul>
-        {%- else -%}
-          <p class="llems-plp__empty">{{ 'sections.collection_template.empty' | t }}</p>
-        {%- endif -%}
-      </div>
+      {%- if target_collection.products_count > 0 -%}
+        <ul
+          class="llems-plp__grid"
+          role="list"
+          aria-label="{{ target_collection.title | escape }}"
+        >
+          {%- for product in target_collection.products limit: section.settings.products_to_show -%}
+            <li class="llems-plp__item">
+              {%- comment -%} Delegate to the reusable product card. {%- endcomment -%}
+              {% render 'llems-product-card',
+                product: product,
+                ratio: image_ratio,
+                show_vendor: section.settings.show_vendor,
+                show_subtitle: section.settings.show_subtitle,
+                show_add_to_cart: section.settings.show_add_to_cart,
+                sizes: card_sizes,
+                lazy_load: true,
+                section_id: section.id
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="llems-plp__empty">{{ 'sections.collection_template.empty' | t }}</p>
+      {%- endif -%}
     </div>
 
     {%- comment -%} ---------- Footer ---------- {%- endcomment -%}
@@ -237,20 +206,6 @@
     },
     {
       "type": "header",
-      "content": "Hero / brand"
-    },
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    },
-    {
-      "type": "richtext",
-      "id": "hero_description",
-      "label": "Brand description"
-    },
-    {
-      "type": "header",
       "content": "Product grid"
     },
     {
@@ -275,7 +230,7 @@
       "min": 2,
       "max": 5,
       "step": 1,
-      "default": 3
+      "default": 4
     },
     {
       "type": "range",
