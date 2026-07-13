@@ -249,18 +249,27 @@
   padding-inline: var(--llems-page-gutter, 1.6rem);
 }
 
+.llems-footer__layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 4rem;
+}
+
+.llems-footer__tagline-wrapper {
+  flex: 0 0 auto;
+  max-width: 40%;
+}
+
 .llems-footer__tagline {
-  margin: 0 0 0.8rem;
+  margin: 0;
   font-size: clamp(1.8rem, 2.5vw, 2.4rem);
   font-weight: 300;
   line-height: 1.25;
   opacity: 0.75;
 }
 
-.llems-footer__copyright {
-  margin: 0 0 1.5rem;
-  font-size: 1.1rem;
-  opacity: 0.45;
+.llems-footer__nav {
+  flex: 1;
 }
 
 .llems-footer__list {

@@ -37,7 +37,7 @@ option for other pages or themes.
 | File | Purpose |
 |------|---------|
 | `sections/llems-home.liquid` | Complete homepage section: nav, hero, grid |
-| `sections/llems-footer.liquid` | Minimal footer: tagline + 4-column link menu |
+| `sections/llems-footer.liquid` | Minimal footer: tagline (left) + 4-column link menu (right) |
 | `sections/llems-home-product-listing.liquid` | Thin section: resolves settings, renders the grid |
 | `snippets/llems-product-card.liquid` | Reusable, dependency-free product card with add-to-cart |
 | `assets/llems-home.css` | Component styles (CSS-variable driven) |

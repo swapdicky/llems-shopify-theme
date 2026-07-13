@@ -15,27 +15,27 @@
   "
 >
   <div class="llems-footer__inner">
-    {%- if section.settings.tagline != blank -%}
-      <p class="llems-footer__tagline">{{ section.settings.tagline | newline_to_br }}</p>
-    {%- endif -%}
+    <div class="llems-footer__layout">
+      {%- if section.settings.tagline != blank -%}
+        <div class="llems-footer__tagline-wrapper">
+          <p class="llems-footer__tagline">{{ section.settings.tagline | newline_to_br }}</p>
+        </div>
+      {%- endif -%}
 
-    {%- if section.settings.copyright != blank -%}
-      <p class="llems-footer__copyright">{{ section.settings.copyright | escape }}</p>
-    {%- endif -%}
-
-    {%- if section.settings.footer_menu != blank and section.settings.footer_menu.links.size > 0 -%}
-      <nav class="llems-footer__nav" aria-label="Footer">
-        <ul class="llems-footer__list">
-          {%- for link in section.settings.footer_menu.links -%}
-            <li class="llems-footer__item">
-              <a class="llems-footer__link" href="{{ link.url }}">
-                {{- link.title | escape -}}
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      </nav>
-    {%- endif -%}
+      {%- if section.settings.footer_menu != blank and section.settings.footer_menu.links.size > 0 -%}
+        <nav class="llems-footer__nav" aria-label="Footer">
+          <ul class="llems-footer__list">
+            {%- for link in section.settings.footer_menu.links -%}
+              <li class="llems-footer__item">
+                <a class="llems-footer__link" href="{{ link.url }}">
+                  {{- link.title | escape -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    </div>
   </div>
 </footer>
 
@@ -56,12 +56,6 @@
       "id": "footer_menu",
       "label": "Footer menu",
       "default": "footer"
-    },
-    {
-      "type": "text",
-      "id": "copyright",
-      "label": "Copyright text",
-      "default": "© LLEMS"
     },
     {
       "type": "color_scheme",
