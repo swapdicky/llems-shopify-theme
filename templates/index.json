@@ -9,6 +9,14 @@
  */
 {
   "sections": {
+    "header": {
+      "type": "llems-header",
+      "settings": {
+        "color_scheme": "background-1",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "home": {
       "type": "llems-home",
       "settings": {
@@ -36,5 +44,5 @@
       }
     }
   },
-  "order": ["home", "footer"]
+  "order": ["header", "home", "footer"]
 }

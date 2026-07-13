@@ -69,26 +69,6 @@
   "
 >
   <div class="llems-home__inner">
-    {%- comment -%} ---------- Navigation ---------- {%- endcomment -%}
-    <div class="llems-nav-wrapper">
-      <nav class="llems-nav" aria-label="Navigation">
-        <ul class="llems-nav__list">
-          <li class="llems-nav__item">
-            <a href="/collections/all" class="llems-nav__link">Catalog</a>
-          </li>
-          <li class="llems-nav__item">
-            <a href="/pages/collaboration" class="llems-nav__link">Collaboration</a>
-          </li>
-          <li class="llems-nav__item">
-            <a href="/pages/about" class="llems-nav__link">About LLEMS</a>
-          </li>
-          <li class="llems-nav__item">
-            <a href="{{ routes.cart_url }}" class="llems-nav__link" data-llems-cart-link>Cart (0)</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
     {%- comment -%} ---------- Hero: product grid ---------- {%- endcomment -%}
     <div class="llems-hero">
       {%- if target_collection.products_count > 0 -%}
