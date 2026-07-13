@@ -1,0 +1,247 @@
+{% comment %}
+  ============================================================
+  LLEMS Home Product Listing
+  ------------------------------------------------------------
+  A reusable, self-contained product listing section that
+  renders a single collection as a responsive product grid.
+
+  ARCHITECTURE:
+  This section is intentionally thin. It resolves settings and
+  delegates the rendering of each product to the reusable
+  snippet `llems-product-card`. This keeps presentation logic
+  modular and reusable across other sections/templates.
+
+  PORTABILITY:
+  Depends only on standard Liquid objects and three LLEMS files:
+    sections/llems-home-product-listing.liquid
+    snippets/llems-product-card.liquid
+    assets/llems-home.css
+    assets/llems-home.js
+  Copy these into any Shopify theme to reuse the component.
+
+  All customisable values come from the schema settings below
+  to avoid hardcoding.
+  ============================================================
+{% endcomment %}
+
+{%- comment -%} Load the component's own, portable assets. {%- endcomment -%}
+{{ 'llems-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'llems-home.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  # Resolve the collection to display.
+  # Falls back to the storefront's built-in "All products" collection
+  # (handle: all) when the merchant has not chosen one, satisfying the
+  # "All Products by default" requirement without hardcoding an ID.
+  assign target_collection = section.settings.collection
+  if target_collection == blank
+    assign target_collection = collections['all']
+  endif
+
+  # Map the image_ratio setting to a numeric aspect-ratio value.
+  assign ratio = 1
+  if section.settings.image_ratio == 'portrait'
+    assign ratio = 0.8
+  elsif section.settings.image_ratio == 'landscape'
+    assign ratio = 1.5
+  endif
+
+  # Build the responsive <img sizes> hint from the column settings so
+  # the browser can pick an appropriately sized image per breakpoint.
+  assign sizes_desktop = 100 | divided_by: section.settings.columns_desktop
+  assign sizes_tablet = 100 | divided_by: section.settings.columns_tablet
+  assign sizes_mobile = 100 | divided_by: section.settings.columns_mobile
+  capture card_sizes
+    echo '(min-width: 990px) '
+    echo sizes_desktop
+    echo 'vw, (min-width: 750px) '
+    echo sizes_tablet
+    echo 'vw, '
+    echo sizes_mobile
+    echo 'vw'
+  endcapture
+-%}
+
+<llems-product-listing
+  class="llems-plp color-{{ section.settings.color_scheme }} gradient"
+  data-section-id="{{ section.id }}"
+  style="
+    --llems-padding-top: {{ section.settings.padding_top }}px;
+    --llems-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --llems-cols-desktop: {{ section.settings.columns_desktop }};
+    --llems-cols-tablet: {{ section.settings.columns_tablet }};
+    --llems-cols-mobile: {{ section.settings.columns_mobile }};
+    --llems-heading-align: {{ section.settings.heading_alignment }};
+  "
+>
+  <div class="llems-plp__inner">
+    {%- if section.settings.title != blank or section.settings.description != blank -%}
+      <header class="llems-plp__header">
+        {%- if section.settings.title != blank -%}
+          <h2 class="llems-plp__title">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="llems-plp__description">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    {%- if target_collection.products_count > 0 -%}
+      <ul
+        class="llems-plp__grid"
+        role="list"
+        aria-label="{{ target_collection.title | escape }}"
+      >
+        {%- for product in target_collection.products limit: section.settings.products_to_show -%}
+          <li class="llems-plp__item">
+            {%- comment -%} Delegate rendering to the reusable card component. {%- endcomment -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: ratio,
+              show_vendor: section.settings.show_vendor,
+              sizes: card_sizes
+            %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      {%- comment -%} Empty / onboarding state. {%- endcomment -%}
+      <p class="llems-plp__empty">{{ 'sections.collection_template.empty' | t }}</p>
+    {%- endif -%}
+  </div>
+</llems-product-listing>
+
+{% schema %}
+{
+  "name": "LLEMS Product Listing",
+  "tag": "section",
+  "class": "section llems-plp-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured products"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Leave empty to use the store's \"All products\" collection."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Maximum products to show",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns on tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (3:2)" }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "LLEMS Product Listing"
+    }
+  ]
+}
+{% endschema %}

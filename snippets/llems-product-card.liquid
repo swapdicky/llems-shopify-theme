@@ -1,0 +1,184 @@
+{% comment %}
+  ============================================================
+  LLEMS Product Card
+  ------------------------------------------------------------
+  Reusable, self-contained product card component.
+
+  PORTABILITY NOTE:
+  Uses only standard Liquid objects and the classes defined in
+  assets/llems-home.css. It has NO dependency on Dawn snippets
+  (price, card-product, etc.), so it can be copied into any
+  Shopify theme alongside llems-home.css.
+
+  Accepts:
+  - product         : {Object}  Product Liquid object (required)
+  - ratio           : {Number}  Image aspect-ratio, e.g. 1, 0.8, 1.5 (optional, default 1)
+  - show_vendor     : {Boolean} Show the product vendor (optional, default false)
+  - show_subtitle   : {Boolean} Show a variant / subtitle line (optional, default true)
+  - show_add_to_cart: {Boolean} Show the add-to-cart button (optional, default true)
+  - sizes           : {String}  Value for the <img sizes> attribute (optional)
+  - lazy_load       : {Boolean} Lazy-load the image (optional, default true)
+  - section_id      : {String}  Parent section id for unique form ids (optional)
+
+  Usage:
+  {% render 'llems-product-card',
+       product: product,
+       ratio: 0.8,
+       show_vendor: true,
+       show_subtitle: true,
+       show_add_to_cart: true,
+       sizes: my_sizes,
+       section_id: section.id
+  %}
+  ============================================================
+{% endcomment %}
+
+{%- liquid
+  # Guard against a missing ratio so aspect-ratio is always valid.
+  assign card_ratio = ratio | default: 1
+  if card_ratio == 0
+    assign card_ratio = 1
+  endif
+
+  # Default lazy loading to true unless explicitly disabled.
+  assign card_loading = 'lazy'
+  if lazy_load == false
+    assign card_loading = 'eager'
+  endif
+
+  # Default the sizes attribute if the caller did not provide one.
+  assign card_sizes = sizes | default: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 50vw'
+
+  # Build a unique form id for add-to-cart so multiple cards on the same
+  # page never conflict.
+  assign form_id = 'llems-add-to-cart-' | append: section_id | append: '-' | append: product.id
+
+  # Resolve the variant to display as a subtitle. Skip the generic
+  # "Default Title" Shopify creates for single-variant products.
+  assign subtitle = product.selected_or_first_available_variant.title
+  if subtitle == 'Default Title'
+    assign subtitle = ''
+  endif
+
+  # Determine if this card can submit directly to cart.
+  # Products with options or quantity rules require the product page.
+  assign can_quick_add = false
+  if product.variants.size == 1 and product.available
+    assign can_quick_add = true
+  endif
+-%}
+
+{%- if product and product != empty -%}
+  <div class="llems-card">
+    <a
+      href="{{ product.url }}"
+      class="llems-card__media"
+      style="aspect-ratio: {{ card_ratio }};"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      {%- if product.featured_image -%}
+        <img
+          class="llems-card__image"
+          src="{{ product.featured_image | image_url: width: 533 }}"
+          srcset="
+            {{ product.featured_image | image_url: width: 165 }} 165w,
+            {{ product.featured_image | image_url: width: 360 }} 360w,
+            {{ product.featured_image | image_url: width: 533 }} 533w,
+            {{ product.featured_image | image_url: width: 720 }} 720w,
+            {{ product.featured_image | image_url: width: 940 }} 940w
+          "
+          sizes="{{ card_sizes }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          width="{{ product.featured_image.width }}"
+          height="{{ product.featured_image.height }}"
+          loading="{{ card_loading }}"
+        >
+      {%- else -%}
+        {{ 'product-apparel-1' | placeholder_svg_tag: 'llems-card__placeholder' }}
+      {%- endif -%}
+
+      {%- comment -%} Sale / sold-out badges. {%- endcomment -%}
+      {%- if product.available == false -%}
+        <span class="llems-card__badge">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif product.compare_at_price > product.price -%}
+        <span class="llems-card__badge">{{ 'products.product.on_sale' | t }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="llems-card__info">
+      {%- if show_vendor and product.vendor != blank -%}
+        <span class="llems-card__vendor">{{ product.vendor | escape }}</span>
+      {%- endif -%}
+
+      <h3 class="llems-card__title">
+        <a class="llems-card__link" href="{{ product.url }}">
+          {{- product.title | escape -}}
+        </a>
+      </h3>
+
+      {%- if show_subtitle and subtitle != blank -%}
+        <p class="llems-card__subtitle">{{ subtitle | escape }}</p>
+      {%- endif -%}
+
+      {%- comment -%} Price with regular / sale / from-price handling. {%- endcomment -%}
+      {%- if product.compare_at_price > product.price -%}
+        <div class="llems-card__price">
+          <span class="llems-card__price--sale">{{ product.price | money }}</span>
+          <s class="llems-card__price--compare">{{ product.compare_at_price | money }}</s>
+        </div>
+      {%- else -%}
+        <div class="llems-card__price">
+          {%- if product.price_varies -%}
+            {%- assign money_price = product.price | money -%}
+            <span>{{ 'products.product.price.from_price_html' | t: price: money_price }}</span>
+          {%- else -%}
+            <span>{{ product.price | money }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if show_add_to_cart -%}
+        <div class="llems-card__actions">
+          {%- if can_quick_add -%}
+            <form
+              method="post"
+              action="{{ routes.cart_add_url }}"
+              accept-charset="UTF-8"
+              class="llems-card__form"
+              data-type="add-to-cart-form"
+              novalidate="novalidate"
+              enctype="multipart/form-data"
+            >
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <button
+                type="submit"
+                name="add"
+                class="llems-btn llems-btn--cart"
+                aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}"
+                {% if product.available == false %}disabled{% endif %}
+              >
+                <span class="llems-btn__label">{{ 'products.product.add_to_cart' | t }}</span>
+                <span class="llems-btn__spinner" hidden>
+                  <span class="llems-spinner"></span>
+                </span>
+              </button>
+            </form>
+          {%- else -%}
+            <a
+              href="{{ product.url }}"
+              class="llems-btn llems-btn--cart llems-btn--outline"
+              aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}"
+            >
+              {%- if product.available -%}
+                {{ 'products.product.choose_options' | t }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

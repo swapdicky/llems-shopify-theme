@@ -1,0 +1,380 @@
+{% comment %}
+  ============================================================
+  LLEMS Home
+  ------------------------------------------------------------
+  A complete, editorial homepage section for a luxury brand.
+
+  PORTABILITY NOTE:
+  This section depends only on standard Shopify Liquid objects,
+  the reusable snippet `snippets/llems-product-card.liquid`, and
+  the dedicated assets `assets/llems-home.css` and
+  `assets/llems-home.js`. It does NOT use Dawn's homepage
+  sections, card-product snippet, or any Dawn-specific JS.
+
+  Copy the following files into any Shopify theme to reuse the
+  homepage:
+    sections/llems-home.liquid
+    snippets/llems-product-card.liquid
+    assets/llems-home.css
+    assets/llems-home.js
+
+  All content is configurable from the Shopify Theme Editor.
+  ============================================================
+{% endcomment %}
+
+{%- comment -%} Load the component's own, portable assets. {%- endcomment -%}
+{{ 'llems-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'llems-home.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  # Primary and secondary navigation menus.
+  assign primary_menu   = section.settings.primary_menu
+  assign secondary_menu = section.settings.secondary_menu
+
+  # Collection to display in the hero grid.
+  # Falls back to the storefront's "All products" collection
+  # (handle: all) when none is selected.
+  assign target_collection = section.settings.collection
+  if target_collection == blank
+    assign target_collection = collections['all']
+  endif
+
+  # Map the image_ratio setting to a numeric aspect-ratio value.
+  assign image_ratio = 1
+  if section.settings.image_ratio == 'portrait'
+    assign image_ratio = 0.8
+  elsif section.settings.image_ratio == 'landscape'
+    assign image_ratio = 1.5
+  endif
+
+  # Responsive <img sizes> hint for the product cards.
+  assign sizes_desktop = 100 | divided_by: section.settings.columns_desktop
+  assign sizes_tablet  = 100 | divided_by: section.settings.columns_tablet
+  assign sizes_mobile  = 100 | divided_by: section.settings.columns_mobile
+  capture card_sizes
+    echo '(min-width: 990px) '
+    echo sizes_desktop
+    echo 'vw, (min-width: 750px) '
+    echo sizes_tablet
+    echo 'vw, '
+    echo sizes_mobile
+    echo 'vw'
+  endcapture
+
+  # Check whether the secondary menu already contains a cart link
+  # so we don't duplicate it.
+  assign has_cart_link = false
+  for link in secondary_menu.links
+    if link.url == routes.cart_url or link.title == 'Cart'
+      assign has_cart_link = true
+    endif
+  endfor
+-%}
+
+<llems-home
+  class="llems-home color-{{ section.settings.color_scheme }} gradient"
+  data-section-id="{{ section.id }}"
+  data-cart-url="{{ routes.cart_url }}"
+  style="
+    --llems-padding-top: {{ section.settings.padding_top }}px;
+    --llems-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="llems-home__inner">
+    {%- comment -%} ---------- Primary navigation ---------- {%- endcomment -%}
+    {%- if primary_menu != blank and primary_menu.links.size > 0 -%}
+      <nav class="llems-nav llems-nav--primary" aria-label="Primary navigation">
+        <ul class="llems-nav__list">
+          {%- for link in primary_menu.links -%}
+            <li class="llems-nav__item">
+              <a
+                href="{{ link.url }}"
+                class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
+              >
+                {{- link.title | escape -}}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    {%- comment -%} ---------- Secondary navigation ---------- {%- endcomment -%}
+    {%- if secondary_menu != blank and secondary_menu.links.size > 0 or has_cart_link == false -%}
+      <nav class="llems-nav llems-nav--secondary" aria-label="Secondary navigation">
+        <ul class="llems-nav__list">
+          {%- for link in secondary_menu.links -%}
+            <li class="llems-nav__item">
+              <a
+                href="{{ link.url }}"
+                class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
+              >
+                {{- link.title | escape -}}
+              </a>
+            </li>
+          {%- endfor -%}
+
+          {%- unless has_cart_link -%}
+            <li class="llems-nav__item">
+              <a
+                href="{{ routes.cart_url }}"
+                class="llems-nav__link"
+                data-llems-cart-link
+              >
+                Cart
+              </a>
+            </li>
+          {%- endunless -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    {%- comment -%} ---------- Hero: brand + product grid ---------- {%- endcomment -%}
+    <div class="llems-hero">
+      <div class="llems-hero__brand">
+        {%- if section.settings.logo != blank -%}
+          <div class="llems-hero__logo-wrapper">
+            <img
+              class="llems-hero__logo"
+              src="{{ section.settings.logo | image_url: width: 1200 }}"
+              srcset="
+                {{ section.settings.logo | image_url: width: 400 }} 400w,
+                {{ section.settings.logo | image_url: width: 800 }} 800w,
+                {{ section.settings.logo | image_url: width: 1200 }} 1200w
+              "
+              sizes="(min-width: 990px) 30vw, 80vw"
+              alt="{{ shop.name | escape }}"
+              width="{{ section.settings.logo.width }}"
+              height="{{ section.settings.logo.height }}"
+              loading="eager"
+            >
+          </div>
+        {%- else -%}
+          <h1 class="llems-hero__title">{{ shop.name | escape }}</h1>
+        {%- endif -%}
+
+        {%- if section.settings.hero_description != blank -%}
+          <div class="llems-hero__description rte">
+            {{ section.settings.hero_description }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="llems-hero__grid-wrapper">
+        {%- if target_collection.products_count > 0 -%}
+          <ul
+            class="llems-plp__grid"
+            role="list"
+            aria-label="{{ target_collection.title | escape }}"
+          >
+            {%- for product in target_collection.products limit: section.settings.products_to_show -%}
+              <li class="llems-plp__item">
+                {%- comment -%} Delegate to the reusable product card. {%- endcomment -%}
+                {% render 'llems-product-card',
+                  product: product,
+                  ratio: image_ratio,
+                  show_vendor: section.settings.show_vendor,
+                  show_subtitle: section.settings.show_subtitle,
+                  show_add_to_cart: section.settings.show_add_to_cart,
+                  sizes: card_sizes,
+                  lazy_load: true,
+                  section_id: section.id
+                %}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <p class="llems-plp__empty">{{ 'sections.collection_template.empty' | t }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Footer ---------- {%- endcomment -%}
+    <footer class="llems-footer">
+      {%- if section.settings.footer_menu != blank and section.settings.footer_menu.links.size > 0 -%}
+        <nav class="llems-footer__nav" aria-label="Footer">
+          <ul class="llems-footer__list">
+            {%- for link in section.settings.footer_menu.links -%}
+              <li class="llems-footer__item">
+                <a class="llems-footer__link" href="{{ link.url }}">
+                  {{- link.title | escape -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      {%- if section.settings.footer_copyright != blank -%}
+        <p class="llems-footer__copyright">
+          {{ section.settings.footer_copyright | escape }}
+        </p>
+      {%- endif -%}
+    </footer>
+  </div>
+</llems-home>
+
+{% schema %}
+{
+  "name": "LLEMS Home",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "primary_menu",
+      "label": "Primary navigation menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "secondary_menu",
+      "label": "Secondary navigation menu"
+    },
+    {
+      "type": "header",
+      "content": "Hero / brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_description",
+      "label": "Brand description"
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Leave empty to use the store's \"All products\" collection."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Maximum products to show",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns on tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (3:2)" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtitle",
+      "label": "Show variant / subtitle",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show add-to-cart button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Footer"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer menu"
+    },
+    {
+      "type": "text",
+      "id": "footer_copyright",
+      "label": "Copyright text",
+      "default": "© LLEMS"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "LLEMS Home"
+    }
+  ]
+}
+{% endschema %}

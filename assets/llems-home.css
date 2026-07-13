@@ -1,0 +1,404 @@
+/*
+ * ============================================================
+ * LLEMS Home
+ * ------------------------------------------------------------
+ * Self-contained styles for the editorial `llems-home` homepage
+ * section.
+ *
+ * PORTABILITY NOTE:
+ * These styles intentionally do NOT depend on Dawn's core CSS.
+ * All spacing is controlled by the inline CSS variables injected
+ * in sections/llems-home.liquid, keeping the component easy to
+ * copy into any other Shopify theme.
+ *
+ * Design intent: minimal, luxury, editorial, typography-first.
+ * Lots of whitespace, restrained colour, no superfluous motion.
+ * ============================================================
+ */
+
+/* ------------------------------------------------------------
+   Global section wrapper
+   ------------------------------------------------------------ */
+.llems-home {
+  padding-top: var(--llems-padding-top, 2.4rem);
+  padding-bottom: var(--llems-padding-bottom, 2.4rem);
+}
+
+.llems-home__inner {
+  max-width: var(--llems-page-width, 1440px);
+  margin-inline: auto;
+  padding-inline: var(--llems-page-gutter, 1.6rem);
+}
+
+/* ------------------------------------------------------------
+   Navigation (shared)
+   ------------------------------------------------------------ */
+.llems-nav {
+  width: 100%;
+}
+
+.llems-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--llems-nav-gap, 0.8rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.llems-nav__link {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  color: inherit;
+  text-decoration: none;
+  letter-spacing: var(--llems-nav-letter, 0.12rem);
+  text-transform: uppercase;
+  font-size: var(--llems-nav-size, 1.2rem);
+  transition: opacity 0.2s ease;
+}
+
+.llems-nav__link:hover,
+.llems-nav__link--active {
+  opacity: 0.6;
+}
+
+/* Primary navigation: sits at the very top. */
+.llems-nav--primary {
+  padding-bottom: 1rem;
+}
+
+/* Secondary navigation: a clean utility bar. */
+.llems-nav--secondary {
+  padding-bottom: 3.2rem;
+}
+
+.llems-nav--secondary .llems-nav__link {
+  text-transform: none;
+  letter-spacing: 0.02rem;
+  font-size: var(--llems-nav-secondary-size, 1.4rem);
+}
+
+/* ------------------------------------------------------------
+   Hero: brand column + product grid
+   ------------------------------------------------------------ */
+.llems-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--llems-hero-gap, 3.2rem);
+}
+
+.llems-hero__brand {
+  flex: 0 0 auto;
+  max-width: 44rem;
+}
+
+.llems-hero__logo-wrapper {
+  margin-bottom: 1.6rem;
+}
+
+.llems-hero__logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.llems-hero__title {
+  margin: 0 0 1.6rem;
+  font-size: clamp(3.6rem, 8vw, 8rem);
+  font-weight: var(--llems-hero-title-weight, 300);
+  letter-spacing: var(--llems-hero-title-letter, -0.04em);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.llems-hero__description {
+  margin: 0;
+  font-size: var(--llems-hero-desc-size, 1.6rem);
+  line-height: 1.6;
+  opacity: 0.75;
+}
+
+.llems-hero__grid-wrapper {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Desktop: fixed-width brand column + fluid product grid. */
+@media screen and (min-width: 990px) {
+  .llems-hero {
+    flex-direction: row;
+    gap: var(--llems-hero-gap-desktop, 6rem);
+  }
+
+  .llems-hero__brand {
+    position: sticky;
+    top: 2rem;
+    align-self: flex-start;
+    width: var(--llems-brand-width, 32rem);
+    max-width: var(--llems-brand-width, 32rem);
+  }
+}
+
+/* ------------------------------------------------------------
+   Product grid
+   ------------------------------------------------------------ */
+.llems-plp__grid {
+  display: grid;
+  gap: var(--llems-grid-gap, 0.8rem);
+  grid-template-columns: repeat(var(--llems-cols-mobile, 1), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media screen and (min-width: 750px) {
+  .llems-plp__grid {
+    gap: var(--llems-grid-gap, 1.2rem);
+    grid-template-columns: repeat(var(--llems-cols-tablet, 2), minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .llems-plp__grid {
+    gap: var(--llems-grid-gap-desktop, 1.6rem);
+    grid-template-columns: repeat(var(--llems-cols-desktop, 3), minmax(0, 1fr));
+  }
+}
+
+/* Grid item wrapper: lets the card stretch to fill the row height. */
+.llems-plp__item {
+  display: flex;
+}
+
+/* Empty state shown when no products are found. */
+.llems-plp__empty {
+  text-align: center;
+  opacity: 0.8;
+  padding: 5rem 0;
+}
+
+/* ------------------------------------------------------------
+   Product card
+   ------------------------------------------------------------ */
+.llems-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.llems-card__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.03);
+  /* aspect-ratio is set inline per image_ratio setting. */
+}
+
+.llems-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Subtle zoom on hover for pointer devices only. */
+@media (hover: hover) {
+  .llems-card:hover .llems-card__image {
+    transform: scale(1.03);
+  }
+}
+
+.llems-card__placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.llems-card__badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 1rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  background: var(--llems-badge-bg, #1a1a1a);
+  color: var(--llems-badge-text, #ffffff);
+}
+
+.llems-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-top: 1rem;
+}
+
+.llems-card__vendor {
+  font-size: 1.1rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.llems-card__title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: var(--llems-title-weight, 400);
+  line-height: 1.4;
+}
+
+.llems-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.llems-card__link:hover {
+  text-decoration: underline;
+}
+
+.llems-card__subtitle {
+  margin: 0;
+  font-size: 1.3rem;
+  opacity: 0.7;
+}
+
+/* Price row supports regular, sale and sold-out states. */
+.llems-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  font-size: 1.4rem;
+  margin-top: 0.4rem;
+}
+
+.llems-card__price--sale {
+  color: var(--llems-sale-color, inherit);
+  font-weight: 500;
+}
+
+.llems-card__price--compare {
+  text-decoration: line-through;
+  opacity: 0.55;
+  font-weight: 400;
+}
+
+/* Card action area. */
+.llems-card__actions {
+  margin-top: 1rem;
+}
+
+.llems-card__form {
+  margin: 0;
+}
+
+/* ------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------ */
+.llems-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 4rem;
+  padding: 0.8rem 1.6rem;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.1rem;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.llems-btn:hover:not(:disabled) {
+  background: currentColor;
+  color: var(--llems-bg-inverse, #fff);
+}
+
+.llems-btn:disabled,
+.llems-btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.llems-btn__spinner {
+  display: inline-flex;
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-left: 0.8rem;
+}
+
+.llems-spinner {
+  width: 100%;
+  height: 100%;
+  border: 1px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: llems-spin 0.8s linear infinite;
+}
+
+@keyframes llems-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+.llems-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: var(--llems-footer-margin, 6rem);
+  padding-top: var(--llems-footer-padding, 2.4rem);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+}
+
+.llems-footer__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem 1.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.llems-footer__link {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.75;
+}
+
+.llems-footer__link:hover {
+  text-decoration: underline;
+}
+
+.llems-footer__copyright {
+  margin: 0;
+  opacity: 0.55;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------
+   Reveal animation (added by llems-home.js)
+   ------------------------------------------------------------ */
+.llems-card--reveal {
+  opacity: 0;
+  transform: translateY(1.2rem);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.llems-card--reveal.llems-card--visible {
+  opacity: 1;
+  transform: none;
+}
