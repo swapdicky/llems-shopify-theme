@@ -1,0 +1,93 @@
+{% comment %}
+  LLEMS Footer
+  ============================================================
+  Minimal footer: tagline + 4-column link menu.
+  Designed to be portable across Shopify themes.
+{% endcomment %}
+
+{{ 'llems-home.css' | asset_url | stylesheet_tag }}
+
+<footer
+  class="llems-footer color-{{ section.settings.color_scheme }} gradient"
+  style="
+    --llems-footer-padding-top: {{ section.settings.padding_top }}px;
+    --llems-footer-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="llems-footer__inner">
+    {%- if section.settings.tagline != blank -%}
+      <p class="llems-footer__tagline">{{ section.settings.tagline | newline_to_br }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.footer_menu != blank and section.settings.footer_menu.links.size > 0 -%}
+      <nav class="llems-footer__nav" aria-label="Footer">
+        <ul class="llems-footer__list">
+          {%- for link in section.settings.footer_menu.links -%}
+            <li class="llems-footer__item">
+              <a class="llems-footer__link" href="{{ link.url }}">
+                {{- link.title | escape -}}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "LLEMS Footer",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "A Blend of Scent and Chinese typography.\nInspired by Eastern Philosophy."
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer menu",
+      "default": "footer"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "LLEMS Footer"
+    }
+  ]
+}
+{% endschema %}

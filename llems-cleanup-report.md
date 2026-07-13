@@ -23,9 +23,10 @@ Analysis method:
 - `llems-home` (renders `snippets/llems-product-card`)
 
 `llems-home` encapsulates a hardcoded 4-item navigation row
-(Catalog, Collaboration, About LLEMS, Cart) and a 4-column product grid.
-No footer is rendered by the section. The global Dawn footer group is no longer
-required for the homepage but remains available to other routes. The legacy
+(Catalog, Collaboration, About LLEMS, Cart) and a 4-column product grid. The
+footer is rendered by a separate `llems-footer` section: a tagline plus a
+4-column link layout. The global Dawn footer group is no longer required for
+the homepage but remains available to other routes. The legacy
 `llems-home-product-listing` section is preserved as a thinner, standalone grid
 option for other pages or themes.
 
@@ -36,6 +37,7 @@ option for other pages or themes.
 | File | Purpose |
 |------|---------|
 | `sections/llems-home.liquid` | Complete homepage section: nav, hero, grid |
+| `sections/llems-footer.liquid` | Minimal footer: tagline + 4-column link menu |
 | `sections/llems-home-product-listing.liquid` | Thin section: resolves settings, renders the grid |
 | `snippets/llems-product-card.liquid` | Reusable, dependency-free product card with add-to-cart |
 | `assets/llems-home.css` | Component styles (CSS-variable driven) |
