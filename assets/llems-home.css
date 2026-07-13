@@ -64,15 +64,19 @@
   opacity: 0.6;
 }
 
-/* Primary navigation: sits at the very top. */
-.llems-nav--primary {
-  padding-bottom: 0.5rem;
+/* Navigation wrapper: only adds spacing when nav exists */
+.llems-nav-wrapper {
+  margin-bottom: 0;
 }
 
-/* Secondary navigation: a clean utility bar. */
-.llems-nav--secondary {
-  padding-bottom: 1.5rem;
+.llems-nav-wrapper:not(:empty) {
+  margin-bottom: 0.5rem;
 }
+
+.llems-nav-wrapper:not(:empty)+.llems-nav-wrapper:not(:empty) {
+  margin-bottom: 1.5rem;
+}
+
 
 .llems-nav--secondary .llems-nav__link {
   text-transform: none;

@@ -83,50 +83,54 @@
   <div class="llems-home__inner">
     {%- comment -%} ---------- Primary navigation ---------- {%- endcomment -%}
     {%- if primary_menu != blank and primary_menu.links.size > 0 -%}
-      <nav class="llems-nav llems-nav--primary" aria-label="Primary navigation">
-        <ul class="llems-nav__list">
-          {%- for link in primary_menu.links -%}
-            <li class="llems-nav__item">
-              <a
-                href="{{ link.url }}"
-                class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
-              >
-                {{- link.title | escape -}}
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      </nav>
+      <div class="llems-nav-wrapper">
+        <nav class="llems-nav llems-nav--primary" aria-label="Primary navigation">
+          <ul class="llems-nav__list">
+            {%- for link in primary_menu.links -%}
+              <li class="llems-nav__item">
+                <a
+                  href="{{ link.url }}"
+                  class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
+                >
+                  {{- link.title | escape -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
     {%- endif -%}
 
     {%- comment -%} ---------- Secondary navigation ---------- {%- endcomment -%}
     {%- if secondary_menu != blank and secondary_menu.links.size > 0 or has_cart_link == false -%}
-      <nav class="llems-nav llems-nav--secondary" aria-label="Secondary navigation">
-        <ul class="llems-nav__list">
-          {%- for link in secondary_menu.links -%}
-            <li class="llems-nav__item">
-              <a
-                href="{{ link.url }}"
-                class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
-              >
-                {{- link.title | escape -}}
-              </a>
-            </li>
-          {%- endfor -%}
+      <div class="llems-nav-wrapper">
+        <nav class="llems-nav llems-nav--secondary" aria-label="Secondary navigation">
+          <ul class="llems-nav__list">
+            {%- for link in secondary_menu.links -%}
+              <li class="llems-nav__item">
+                <a
+                  href="{{ link.url }}"
+                  class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
+                >
+                  {{- link.title | escape -}}
+                </a>
+              </li>
+            {%- endfor -%}
 
-          {%- unless has_cart_link -%}
-            <li class="llems-nav__item">
-              <a
-                href="{{ routes.cart_url }}"
-                class="llems-nav__link"
-                data-llems-cart-link
-              >
-                Cart
-              </a>
-            </li>
-          {%- endunless -%}
-        </ul>
-      </nav>
+            {%- unless has_cart_link -%}
+              <li class="llems-nav__item">
+                <a
+                  href="{{ routes.cart_url }}"
+                  class="llems-nav__link"
+                  data-llems-cart-link
+                >
+                  Cart
+                </a>
+              </li>
+            {%- endunless -%}
+          </ul>
+        </nav>
+      </div>
     {%- endif -%}
 
     {%- comment -%} ---------- Hero: product grid ---------- {%- endcomment -%}
