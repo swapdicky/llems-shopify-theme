@@ -1,0 +1,101 @@
+{% comment %}
+  LLEMS Minimal Cart Drawer
+  ============================================================
+  A simplified, dependency-free cart drawer.
+  Usage: {% render 'llems-cart-drawer' %}
+{% endcomment %}
+
+<cart-drawer class="llems-cart-drawer" data-llems-cart-drawer aria-hidden="true">
+  <div class="llems-cart-drawer__overlay" data-llems-cart-drawer-close></div>
+  <div class="llems-cart-drawer__panel" role="dialog" aria-modal="true" aria-label="Cart" tabindex="-1">
+    <div class="llems-cart-drawer__header">
+      <h2 class="llems-cart-drawer__title">Your cart</h2>
+      <button type="button" class="llems-cart-drawer__close" data-llems-cart-drawer-close aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    {%- if cart == empty -%}
+      <div class="llems-cart-drawer__empty">
+        <p>Your cart is empty.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="button">Continue shopping</a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" class="llems-cart-drawer__form">
+        <div class="llems-cart-drawer__items">
+          {%- for item in cart.items -%}
+            <div class="llems-cart-drawer__item">
+              {%- if item.image -%}
+                <img class="llems-cart-drawer__image" src="{{ item.image | image_url: width: 120 }}" alt="{{ item.image.alt | escape }}" width="60" height="60" loading="lazy">
+              {%- endif -%}
+              <div class="llems-cart-drawer__details">
+                <a href="{{ item.url }}" class="llems-cart-drawer__name">{{ item.product.title | escape }}</a>
+                <p class="llems-cart-drawer__price">{{ item.original_price | money }}</p>
+                <div class="llems-cart-drawer__quantity">
+                  <label for="llems-cart-qty-{{ item.index | plus: 1 }}" class="visually-hidden">Quantity</label>
+                  <input
+                    id="llems-cart-qty-{{ item.index | plus: 1 }}"
+                    type="number"
+                    name="updates[]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    step="1"
+                    class="llems-cart-drawer__qty-input"
+                  >
+                  <a href="{{ item.url_to_remove }}" class="llems-cart-drawer__remove" aria-label="Remove {{ item.title | escape }}">Remove</a>
+                </div>
+              </div>
+              <p class="llems-cart-drawer__total">{{ item.original_line_price | money }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="llems-cart-drawer__footer">
+          <div class="llems-cart-drawer__subtotal">
+            <span>Subtotal</span>
+            <strong>{{ cart.total_price | money_with_currency }}</strong>
+          </div>
+          <button type="submit" class="llems-cart-drawer__update button button--secondary">Update cart</button>
+          <button type="submit" name="checkout" class="llems-cart-drawer__checkout button">Check out</button>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</cart-drawer>
+
+<script>
+  (function () {
+    class LlemsCartDrawer extends HTMLElement {
+      connectedCallback() {
+        this.closeTriggers = this.querySelectorAll('[data-llems-cart-drawer-close]');
+        this.closeTriggers.forEach((trigger) => {
+          trigger.addEventListener('click', () => this.close());
+        });
+      }
+
+      open() {
+        this.setAttribute('aria-hidden', 'false');
+        this.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      close() {
+        this.setAttribute('aria-hidden', 'true');
+        this.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (!customElements.get('cart-drawer')) {
+      customElements.define('cart-drawer', LlemsCartDrawer);
+    }
+
+    document.addEventListener('click', (event) => {
+      const trigger = event.target.closest('[data-llems-cart-toggle]');
+      if (!trigger) return;
+      event.preventDefault();
+      const drawer = document.querySelector('[data-llems-cart-drawer]');
+      if (drawer) drawer.open();
+    });
+  })();
+</script>
