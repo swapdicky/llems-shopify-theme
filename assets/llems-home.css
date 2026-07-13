@@ -129,9 +129,8 @@
 .llems-hero__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(3, auto);
   gap: 1.6rem;
-  aspect-ratio: 4 / 3;
 }
 
 .llems-hero__product .llems-card__media {
