@@ -138,40 +138,6 @@
         </div>
       {%- endif -%}
 
-      {%- if show_add_to_cart -%}
-        {%- if can_quick_add -%}
-          <form
-            method="post"
-            action="{{ routes.cart_add_url }}"
-            accept-charset="UTF-8"
-            class="llems-card__form"
-            data-type="add-to-cart-form"
-            novalidate="novalidate"
-            enctype="multipart/form-data"
-          >
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-            <button
-              type="submit"
-              name="add"
-              aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}"
-              {% if product.available == false %}disabled{% endif %}
-            >
-              {{ 'products.product.add_to_cart' | t }}
-            </button>
-          </form>
-        {%- else -%}
-          <a
-            href="{{ product.url }}"
-            aria-label="{{ 'products.product.choose_options' | t }}: {{ product.title | escape }}"
-          >
-            {%- if product.available -%}
-              {{ 'products.product.choose_options' | t }}
-            {%- else -%}
-              {{ 'products.product.sold_out' | t }}
-            {%- endif -%}
-          </a>
-        {%- endif -%}
-      {%- endif -%}
     </div>
   </div>
 {%- endif -%}
