@@ -78,12 +78,6 @@
 }
 
 
-.llems-nav--secondary .llems-nav__link {
-  text-transform: none;
-  letter-spacing: 0.02rem;
-  font-size: var(--llems-nav-secondary-size, 1.4rem);
-}
-
 /* ------------------------------------------------------------
    Hero: product grid
    ------------------------------------------------------------ */

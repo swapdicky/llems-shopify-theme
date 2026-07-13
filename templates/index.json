@@ -12,8 +12,6 @@
     "home": {
       "type": "llems-home",
       "settings": {
-        "primary_menu": "main-menu",
-        "secondary_menu": "",
         "collection": "",
         "products_to_show": 12,
         "columns_desktop": 4,

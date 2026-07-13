@@ -27,10 +27,6 @@
 <script src="{{ 'llems-home.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
-  # Primary and secondary navigation menus.
-  assign primary_menu   = section.settings.primary_menu
-  assign secondary_menu = section.settings.secondary_menu
-
   # Collection to display in the hero grid.
   # Falls back to the storefront's "All products" collection
   # (handle: all) when none is selected.
@@ -61,14 +57,6 @@
     echo 'vw'
   endcapture
 
-  # Check whether the secondary menu already contains a cart link
-  # so we don't duplicate it.
-  assign has_cart_link = false
-  for link in secondary_menu.links
-    if link.url == routes.cart_url or link.title == 'Cart'
-      assign has_cart_link = true
-    endif
-  endfor
 -%}
 
 <llems-home
@@ -81,57 +69,25 @@
   "
 >
   <div class="llems-home__inner">
-    {%- comment -%} ---------- Primary navigation ---------- {%- endcomment -%}
-    {%- if primary_menu != blank and primary_menu.links.size > 0 -%}
-      <div class="llems-nav-wrapper">
-        <nav class="llems-nav llems-nav--primary" aria-label="Primary navigation">
-          <ul class="llems-nav__list">
-            {%- for link in primary_menu.links -%}
-              <li class="llems-nav__item">
-                <a
-                  href="{{ link.url }}"
-                  class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
-                >
-                  {{- link.title | escape -}}
-                </a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </nav>
-      </div>
-    {%- endif -%}
-
-    {%- comment -%} ---------- Secondary navigation ---------- {%- endcomment -%}
-    {%- if secondary_menu != blank and secondary_menu.links.size > 0 or has_cart_link == false -%}
-      <div class="llems-nav-wrapper">
-        <nav class="llems-nav llems-nav--secondary" aria-label="Secondary navigation">
-          <ul class="llems-nav__list">
-            {%- for link in secondary_menu.links -%}
-              <li class="llems-nav__item">
-                <a
-                  href="{{ link.url }}"
-                  class="llems-nav__link{% if link.active %} llems-nav__link--active{% endif %}"
-                >
-                  {{- link.title | escape -}}
-                </a>
-              </li>
-            {%- endfor -%}
-
-            {%- unless has_cart_link -%}
-              <li class="llems-nav__item">
-                <a
-                  href="{{ routes.cart_url }}"
-                  class="llems-nav__link"
-                  data-llems-cart-link
-                >
-                  Cart
-                </a>
-              </li>
-            {%- endunless -%}
-          </ul>
-        </nav>
-      </div>
-    {%- endif -%}
+    {%- comment -%} ---------- Navigation ---------- {%- endcomment -%}
+    <div class="llems-nav-wrapper">
+      <nav class="llems-nav" aria-label="Navigation">
+        <ul class="llems-nav__list">
+          <li class="llems-nav__item">
+            <a href="/collections/all" class="llems-nav__link">Catalog</a>
+          </li>
+          <li class="llems-nav__item">
+            <a href="/pages/collaboration" class="llems-nav__link">Collaboration</a>
+          </li>
+          <li class="llems-nav__item">
+            <a href="/pages/about" class="llems-nav__link">About LLEMS</a>
+          </li>
+          <li class="llems-nav__item">
+            <a href="{{ routes.cart_url }}" class="llems-nav__link" data-llems-cart-link>Cart (0)</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
     {%- comment -%} ---------- Hero: product grid ---------- {%- endcomment -%}
     <div class="llems-hero">
@@ -193,21 +149,6 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Navigation"
-    },
-    {
-      "type": "link_list",
-      "id": "primary_menu",
-      "label": "Primary navigation menu",
-      "default": "main-menu"
-    },
-    {
-      "type": "link_list",
-      "id": "secondary_menu",
-      "label": "Secondary navigation menu"
-    },
     {
       "type": "header",
       "content": "Product grid"
