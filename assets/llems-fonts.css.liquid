@@ -1,12 +1,10 @@
 /* ------------------------------------------------------------
    LLEMS Fonts
    ------------------------------------------------------------ */
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@400;700&family=Sanchez&display=swap');
-
 @font-face {
   font-family: 'Kleukens-Egyptienne';
-  src: url('{{ "kleukens-egyptienne-regular.woff2" | asset_url }}') format('woff2'),
-       url('{{ "kleukens-egyptienne-regular.woff" | asset_url }}') format('woff');
+  src: url('{{ "Kleukens-EgyptienneRegular.woff2" | asset_url }}') format('woff2'),
+       url('{{ "Kleukens-EgyptienneRegular.otf" | asset_url }}') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -14,18 +12,42 @@
 
 @font-face {
   font-family: 'Kleukens-Egyptienne';
-  src: url('{{ "kleukens-egyptienne-bold.woff2" | asset_url }}') format('woff2'),
-       url('{{ "kleukens-egyptienne-bold.woff" | asset_url }}') format('woff');
-  font-weight: 700;
+  src: url('{{ "Kleukens-EgyptienneRegularItalic.woff2" | asset_url }}') format('woff2'),
+       url('{{ "Kleukens-EgyptienneRegularItalic.otf" | asset_url }}') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kleukens-Egyptienne';
+  src: url('{{ "Kleukens-EgyptienneBook.woff2" | asset_url }}') format('woff2'),
+       url('{{ "Kleukens-EgyptienneBook.otf" | asset_url }}') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kleukens-Egyptienne';
+  src: url('{{ "Kleukens-EgyptienneBookItalic.woff2" | asset_url }}') format('woff2'),
+       url('{{ "Kleukens-EgyptienneBookItalic.otf" | asset_url }}') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kleukens-Egyptienne';
+  src: url('{{ "Kleukens-EgyptienneMedium.woff2" | asset_url }}') format('woff2'),
+       url('{{ "Kleukens-EgyptienneMedium.otf" | asset_url }}') format('opentype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 html,
-body {
-  font-family: 'Kleukens-Egyptienne', 'Sanchez', 'Josefin Slab', Georgia, serif;
-}
-
+body,
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Kleukens-Egyptienne', 'Sanchez', 'Josefin Slab', Georgia, serif;
+  font-family: 'Kleukens-Egyptienne', Georgia, serif;
 }
