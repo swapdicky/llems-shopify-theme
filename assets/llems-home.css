@@ -236,48 +236,6 @@
 }
 
 /* ------------------------------------------------------------
-   Footer
-   ------------------------------------------------------------ */
-.llems-footer {
-  display: block;
-  margin-top: var(--llems-footer-margin, 3rem);
-  padding-top: var(--llems-footer-padding, 1.5rem);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  font-size: 1.2rem;
-}
-
-.llems-footer__tagline {
-  margin: 0 0 2rem;
-  font-size: clamp(2rem, 3vw, 2.8rem);
-  font-weight: 300;
-  line-height: 1.25;
-  opacity: 0.85;
-}
-
-.llems-footer__list {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.llems-footer__item {
-  text-align: left;
-}
-
-.llems-footer__link {
-  color: inherit;
-  text-decoration: none;
-  opacity: 0.75;
-}
-
-.llems-footer__link:hover {
-  text-decoration: underline;
-}
-
-/* ------------------------------------------------------------
    Reveal animation (added by llems-home.js)
    ------------------------------------------------------------ */
 .llems-card--reveal {

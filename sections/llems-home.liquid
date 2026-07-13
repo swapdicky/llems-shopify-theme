@@ -118,26 +118,6 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} ---------- Footer ---------- {%- endcomment -%}
-    <footer class="llems-footer">
-      {%- if section.settings.footer_tagline != blank -%}
-        <p class="llems-footer__tagline">{{ section.settings.footer_tagline | newline_to_br }}</p>
-      {%- endif -%}
-
-      {%- if section.settings.footer_menu != blank and section.settings.footer_menu.links.size > 0 -%}
-        <nav class="llems-footer__nav" aria-label="Footer">
-          <ul class="llems-footer__list">
-            {%- for link in section.settings.footer_menu.links -%}
-              <li class="llems-footer__item">
-                <a class="llems-footer__link" href="{{ link.url }}">
-                  {{- link.title | escape -}}
-                </a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </nav>
-      {%- endif -%}
-    </footer>
   </div>
 </llems-home>
 
@@ -222,21 +202,6 @@
       "id": "show_add_to_cart",
       "label": "Show add-to-cart button",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Footer"
-    },
-    {
-      "type": "link_list",
-      "id": "footer_menu",
-      "label": "Footer menu"
-    },
-    {
-      "type": "textarea",
-      "id": "footer_tagline",
-      "label": "Footer tagline",
-      "default": "A Blend of Scent and Chinese typography.\nInspired by Eastern Philosophy."
     },
     {
       "type": "header",
