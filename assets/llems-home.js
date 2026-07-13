@@ -74,6 +74,29 @@
       this.cards.forEach((card) => card.classList.add('llems-card--visible'));
     }
 
+    /** Fetch the current cart and update any [data-llems-cart-link] labels. */
+    async updateCartCount() {
+      try {
+        const response = await fetch('/cart.js', {
+          method: 'GET',
+          credentials: 'same-origin',
+          headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) return;
+
+        const cart = await response.json();
+        const count = cart?.item_count ?? 0;
+
+        document.querySelectorAll('[data-llems-cart-link]').forEach((link) => {
+          link.textContent = `Cart (${count})`;
+        });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('[LLEMS] Failed to refresh cart count:', err);
+      }
+    }
+
     /** Attach AJAX submit handlers to every add-to-cart form in this section. */
     bindCartForms() {
       this.cartForms = Array.from(
@@ -109,6 +132,9 @@
         }
 
         if (button) button.textContent = ADDED_MESSAGE;
+
+        // Refresh the cart count in any LLEMS header links.
+        this.updateCartCount();
 
         // Notify the host theme that the cart changed, without knowing
         // anything about the host's cart implementation.
