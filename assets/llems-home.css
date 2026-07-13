@@ -232,13 +232,8 @@
   font-weight: 400;
 }
 
-/* Card action area. */
-.llems-card__actions {
-  margin-top: 1rem;
-}
-
 .llems-card__form {
-  margin: 0;
+  margin: 1rem 0 0;
 }
 
 /* ------------------------------------------------------------
