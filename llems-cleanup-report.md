@@ -24,10 +24,10 @@ Analysis method:
 
 `llems-home` encapsulates a hardcoded 4-item navigation row
 (Catalog, Collaboration, About LLEMS, Cart), a 4-column product grid, and a
-minimal footer. The global Dawn footer group is no longer required for the
-homepage but remains available to other routes. The legacy
-`llems-home-product-listing` section is preserved as a thinner, standalone grid
-option for other pages or themes.
+minimal footer with a tagline and 4-column link layout. The global Dawn footer
+group is no longer required for the homepage but remains available to other
+routes. The legacy `llems-home-product-listing` section is preserved as a
+thinner, standalone grid option for other pages or themes.
 
 ---
 
