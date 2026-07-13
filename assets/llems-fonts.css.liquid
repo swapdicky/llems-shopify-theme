@@ -1,6 +1,8 @@
 /* ------------------------------------------------------------
    LLEMS Fonts
    ------------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@400;700&family=Sanchez&display=swap');
+
 @font-face {
   font-family: 'Kleukens-Egyptienne';
   src: url('{{ "kleukens-egyptienne-regular.woff2" | asset_url }}') format('woff2'),
@@ -19,9 +21,11 @@
   font-display: swap;
 }
 
-.llems-header,
-.llems-home,
-.llems-footer,
-.llems-cart-drawer {
-  font-family: 'Kleukens-Egyptienne', sans-serif;
+html,
+body {
+  font-family: 'Kleukens-Egyptienne', 'Sanchez', 'Josefin Slab', Georgia, serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Kleukens-Egyptienne', 'Sanchez', 'Josefin Slab', Georgia, serif;
 }
