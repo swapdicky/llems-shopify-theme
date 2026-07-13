@@ -72,7 +72,7 @@
     {%- comment -%} ---------- Hero: custom 4x3 grid with logo ---------- {%- endcomment -%}
     <div class="llems-hero">
       <div class="llems-hero__grid">
-        {%- comment -%} Row 1: Logo | Product | Empty | Empty {%- endcomment -%}
+        {%- comment -%} Row 1: ABBB (Logo | Product | Product | Product) {%- endcomment -%}
         <div class="llems-hero__logo">
           {%- if section.settings.logo_image != blank -%}
             <img
@@ -109,10 +109,6 @@
           {%- endif -%}
         </div>
 
-        <div class="llems-hero__empty"></div>
-        <div class="llems-hero__empty"></div>
-
-        {%- comment -%} Row 2: Product | Product | Product | Empty {%- endcomment -%}
         <div class="llems-hero__product">
           {%- if target_collection.products_count > 1 -%}
             {%- assign product = target_collection.products[1] -%}
@@ -145,6 +141,7 @@
           {%- endif -%}
         </div>
 
+        {%- comment -%} Row 2: BOBB (Product | Empty | Product | Product) {%- endcomment -%}
         <div class="llems-hero__product">
           {%- if target_collection.products_count > 3 -%}
             {%- assign product = target_collection.products[3] -%}
@@ -163,7 +160,6 @@
 
         <div class="llems-hero__empty"></div>
 
-        {%- comment -%} Row 3: Product | Product | Empty | Empty {%- endcomment -%}
         <div class="llems-hero__product">
           {%- if target_collection.products_count > 4 -%}
             {%- assign product = target_collection.products[4] -%}
@@ -183,6 +179,39 @@
         <div class="llems-hero__product">
           {%- if target_collection.products_count > 5 -%}
             {%- assign product = target_collection.products[5] -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: image_ratio,
+              show_vendor: section.settings.show_vendor,
+              show_subtitle: section.settings.show_subtitle,
+              show_add_to_cart: false,
+              sizes: card_sizes,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Row 3: BBOO (Product | Product | Empty | Empty) {%- endcomment -%}
+        <div class="llems-hero__product">
+          {%- if target_collection.products_count > 6 -%}
+            {%- assign product = target_collection.products[6] -%}
+            {% render 'llems-product-card',
+              product: product,
+              ratio: image_ratio,
+              show_vendor: section.settings.show_vendor,
+              show_subtitle: section.settings.show_subtitle,
+              show_add_to_cart: false,
+              sizes: card_sizes,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          {%- endif -%}
+        </div>
+
+        <div class="llems-hero__product">
+          {%- if target_collection.products_count > 7 -%}
+            {%- assign product = target_collection.products[7] -%}
             {% render 'llems-product-card',
               product: product,
               ratio: image_ratio,
