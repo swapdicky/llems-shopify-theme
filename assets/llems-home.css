@@ -46,8 +46,8 @@
 .llems-header__link {
   color: inherit;
   text-decoration: none;
-  letter-spacing: var(--llems-nav-letter, 0.12rem);
-  font-size: var(--llems-nav-size, 1.2rem);
+  letter-spacing: -0.02em;
+  font-size: 1.2rem;
   transition: opacity 0.2s ease;
   opacity: 0.75;
 }
@@ -94,9 +94,9 @@
   padding: 0.6rem 1.2rem;
   color: inherit;
   text-decoration: none;
-  letter-spacing: var(--llems-nav-letter, 0.12rem);
+  letter-spacing: -0.02em;
   text-transform: uppercase;
-  font-size: var(--llems-nav-size, 1.2rem);
+  font-size: 1.2rem;
   transition: opacity 0.2s ease;
 }
 
@@ -140,13 +140,13 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  aspect-ratio: 296 / 425;
+  aspect-ratio: 296 / 396;
 }
 
 .llems-hero__product .llems-card__image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 0.5s ease;
 }
 
@@ -166,12 +166,13 @@
   height: 100%;
   object-fit: contain;
   padding: 1.6rem;
-  aspect-ratio: 296 / 425;
+  aspect-ratio: 296 / 396;
 }
 
 .llems-hero__logo-placeholder {
   font-size: 1.4rem;
   font-weight: 300;
+  letter-spacing: -0.02em;
   opacity: 0.4;
   text-align: center;
 }
@@ -356,7 +357,7 @@
 
 .llems-card__vendor {
   font-size: 1.1rem;
-  letter-spacing: 0.08rem;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   opacity: 0.55;
 }
@@ -365,6 +366,7 @@
   margin: 0;
   font-size: 1.4rem;
   font-weight: var(--llems-title-weight, 400);
+  letter-spacing: -0.02em;
   line-height: 1.4;
 }
 
@@ -380,6 +382,7 @@
 .llems-card__subtitle {
   margin: 0;
   font-size: 1.3rem;
+  letter-spacing: -0.02em;
   opacity: 0.7;
 }
 
@@ -389,6 +392,7 @@
   align-items: baseline;
   gap: 0.8rem;
   font-size: 1.4rem;
+  letter-spacing: -0.02em;
   margin-top: 0.4rem;
 }
 
@@ -459,12 +463,14 @@
   margin: 0;
   font-size: 1.6rem;
   font-weight: 400;
+  letter-spacing: -0.02em;
 }
 
 .llems-cart-drawer__close {
   background: none;
   border: none;
   font-size: 2.4rem;
+  letter-spacing: -0.02em;
   line-height: 1;
   cursor: pointer;
 }
@@ -512,12 +518,14 @@
   color: inherit;
   text-decoration: none;
   font-size: 1.3rem;
+  letter-spacing: -0.02em;
 }
 
 .llems-cart-drawer__price {
   margin: 0 0 0.8rem;
   opacity: 0.65;
   font-size: 1.2rem;
+  letter-spacing: -0.02em;
 }
 
 .llems-cart-drawer__quantity {
@@ -537,11 +545,13 @@
   color: inherit;
   opacity: 0.55;
   font-size: 1.1rem;
+  letter-spacing: -0.02em;
 }
 
 .llems-cart-drawer__total {
   margin: 0;
   font-size: 1.3rem;
+  letter-spacing: -0.02em;
   text-align: right;
   min-width: 6rem;
 }
@@ -556,6 +566,7 @@
   justify-content: space-between;
   margin-bottom: 1.2rem;
   font-size: 1.4rem;
+  letter-spacing: -0.02em;
 }
 
 .llems-cart-drawer__update,
@@ -618,6 +629,7 @@
   text-decoration: none;
   opacity: 0.6;
   font-size: 1.1rem;
+  letter-spacing: -0.02em;
 }
 
 .llems-footer__link:hover {
